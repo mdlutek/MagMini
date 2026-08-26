@@ -1,0 +1,35 @@
+﻿<Window x:Class="MagMini.UI.Views.SplashScreenView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MagMini - Uruchamianie"
+        Height="280" Width="480"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="#1E1E2E"
+        AllowsTransparency="True">
+    <Border BorderBrush="#3B4252" BorderThickness="1" CornerRadius="8">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Logo / Nazwa -->
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="MagMini ERP" FontSize="26" FontWeight="Bold" Foreground="#88C0D0"/>
+                <TextBlock Text="System Zarządzania Sprzedażą i Magazynem" FontSize="12" Foreground="#D8DEE9" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Status ładowania -->
+            <TextBlock x:Name="StatusTextBlock" Grid.Row="2" Text="Inicjalizacja aplikacji..." 
+                       Foreground="#E5E9F0" FontSize="12" Margin="0,0,0,8"/>
+
+            <!-- Pasek postępu -->
+            <ProgressBar x:Name="InitProgressBar" Grid.Row="3" Height="6" 
+                         IsIndeterminate="True" Foreground="#88C0D0" Background="#2E3440" BorderThickness="0"/>
+        </Grid>
+    </Border>
+</Window>

@@ -3,6 +3,7 @@ using MagMini.Infrastructure.Persistence;
 using MagMini.Infrastructure.Persistence.Interceptors;
 using MagMini.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +21,8 @@ public static class DependencyInjection
 
         services.AddDbContext<AppDbContext>((sp, options) =>
         {
-            options.UseSqlServer(connectionString);
+            options.UseSqlServer(connectionString)
+                .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
         });
 
         services.AddScoped<DbInitializer>();
