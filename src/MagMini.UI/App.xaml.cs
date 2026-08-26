@@ -23,14 +23,10 @@ public partial class App : System.Windows.Application
             })
             .ConfigureServices((context, services) =>
             {
-                // Rejestracja warstw
                 services.AddInfrastructure(context.Configuration);
-
-                // Rejestracja sesji użytkownika
                 services.AddSingleton<CurrentUserService>();
                 services.AddSingleton<ICurrentUserService>(sp => sp.GetRequiredService<CurrentUserService>());
 
-                // Rejestracja okien
                 services.AddSingleton<MainWindow>();
             })
             .Build();
@@ -45,20 +41,24 @@ public partial class App : System.Windows.Application
 
         try
         {
-            splash.UpdateStatus("Uruchamianie usług systemowych...");
-            await AppHost!.StartAsync();
-
-            splash.UpdateStatus("Sprawdzanie i migracja bazy danych...");
-            using (var scope = AppHost.Services.CreateScope())
+            // Cała ciężka praca leci w osobnym wątku (Task.Run), wątek UI pozostaje w 100% płynny
+            await Task.Run(async () =>
             {
-                var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
-                await dbInitializer.InitializeAsync();
-            }
+                splash.UpdateStatus("Uruchamianie usług systemowych...");
+                await AppHost!.StartAsync();
 
-            splash.UpdateStatus("Uruchamianie aplikacji...");
-            await Task.Delay(500); // Płynne przejście
+                splash.UpdateStatus("Sprawdzanie i migracja bazy danych...");
+                using (var scope = AppHost.Services.CreateScope())
+                {
+                    var dbInitializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+                    await dbInitializer.InitializeAsync();
+                }
 
-            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+                splash.UpdateStatus("Gotowe!");
+                await Task.Delay(400); // Krótki bufor wizualny
+            });
+
+            var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
             splash.Close();
