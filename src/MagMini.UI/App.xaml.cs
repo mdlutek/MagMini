@@ -3,6 +3,7 @@ using MagMini.Application.Common.Interfaces;
 using MagMini.Infrastructure;
 using MagMini.Infrastructure.Persistence;
 using MagMini.UI.Services;
+using MagMini.UI.ViewModels;
 using MagMini.UI.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,9 @@ public partial class App : System.Windows.Application
                 services.AddSingleton<CurrentUserService>();
                 services.AddSingleton<ICurrentUserService>(sp => sp.GetRequiredService<CurrentUserService>());
 
+                // Rejestracja View i ViewModeli
+                services.AddTransient<LoginViewModel>();
+                services.AddTransient<LoginView>();
                 services.AddSingleton<MainWindow>();
             })
             .Build();
@@ -36,12 +40,14 @@ public partial class App : System.Windows.Application
     {
         base.OnStartup(e);
 
+        // Zapobiega zamknięciu aplikacji po zamknięciu SplashScreena
+        ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
         var splash = new SplashScreenView();
         splash.Show();
 
         try
         {
-            // Cała ciężka praca leci w osobnym wątku (Task.Run), wątek UI pozostaje w 100% płynny
             await Task.Run(async () =>
             {
                 splash.UpdateStatus("Uruchamianie usług systemowych...");
@@ -55,13 +61,27 @@ public partial class App : System.Windows.Application
                 }
 
                 splash.UpdateStatus("Gotowe!");
-                await Task.Delay(400); // Krótki bufor wizualny
+                await Task.Delay(300);
             });
 
-            var mainWindow = AppHost!.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-
+            // Zamykamy splash screen dopiero po zakończeniu inicjalizacji
             splash.Close();
+
+            // Pokazujemy okno logowania
+            var loginView = AppHost!.Services.GetRequiredService<LoginView>();
+            var loginResult = loginView.ShowDialog();
+
+            if (loginResult == true)
+            {
+                var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+                MainWindow = mainWindow;
+                ShutdownMode = ShutdownMode.OnMainWindowClose; // Od teraz zamknięcie MainWindow zamyka aplikację
+                mainWindow.Show();
+            }
+            else
+            {
+                Shutdown();
+            }
         }
         catch (Exception ex)
         {

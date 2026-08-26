@@ -1,0 +1,45 @@
+﻿<Window x:Class="MagMini.UI.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MagMini - Logowanie" 
+        Height="380" Width="400"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#ECEFF4"
+        FontFamily="Segoe UI">
+    <Grid Margin="35">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Nagłówek -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <TextBlock Text="MagMini ERP" FontSize="26" FontWeight="Bold" Foreground="#2E3440" HorizontalAlignment="Center"/>
+            <TextBlock Text="Wprowadź dane dostępowe" FontSize="13" Foreground="#4C566A" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Formularz -->
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Login (Użytkownik):" FontWeight="SemiBold" Foreground="#4C566A" Margin="0,0,0,4"/>
+            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
+                     Height="32" Padding="6,4" VerticalContentAlignment="Center" FontSize="13" Margin="0,0,0,12"/>
+
+            <TextBlock Text="Hasło:" FontWeight="SemiBold" Foreground="#4C566A" Margin="0,0,0,4"/>
+            <PasswordBox x:Name="UserPasswordBox" Height="32" Padding="6,4" VerticalContentAlignment="Center" FontSize="13" Margin="0,0,0,10"/>
+
+            <!-- Komunikat błędu -->
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="#BF616A" FontWeight="SemiBold" 
+                       TextWrapping="Wrap" Margin="0,0,0,5" Height="20"/>
+        </StackPanel>
+
+        <!-- Przyciski -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Anuluj" IsCancel="True" Width="85" Height="32" Margin="0,0,10,0" Background="#E5E9F0" BorderBrush="#D8DEE9"/>
+            <Button Content="Zaloguj" IsDefault="True" Width="95" Height="32" Background="#5E81AC" Foreground="White" FontWeight="Bold" BorderThickness="0"
+                    Command="{Binding LoginCommand}" 
+                    CommandParameter="{Binding ElementName=UserPasswordBox}"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -2,6 +2,7 @@
 using MagMini.Infrastructure.Persistence;
 using MagMini.Infrastructure.Persistence.Interceptors;
 using MagMini.Infrastructure.Security;
+using MagMini.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ public static class DependencyInjection
             ?? "Server=(localdb)\\mssqllocaldb;Database=MagMiniDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<AuditableEntityInterceptor>();
 
         services.AddDbContext<AppDbContext>((sp, options) =>
