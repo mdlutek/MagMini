@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MagMini.Application/MagMini.Application.csproj" />
+    <Project Path="src/MagMini.Domain/MagMini.Domain.csproj" />
+    <Project Path="src/MagMini.Infrastructure/MagMini.Infrastructure.csproj" />
+    <Project Path="src/MagMini.UI/MagMini.UI.csproj" />
+  </Folder>
+</Solution>
