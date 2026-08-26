@@ -1,0 +1,85 @@
+﻿<Window x:Class="MagMini.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:MagMini.UI.ViewModels"
+        xmlns:views="clr-namespace:MagMini.UI.Views"
+        Title="MagMini ERP - System Handlowo-Magazynowy" 
+        Height="720" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#ECEFF4"
+        FontFamily="Segoe UI">
+
+    <!-- Rejestracja szablonów widoków (View Mapping) -->
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <views:DashboardView />
+        </DataTemplate>
+        <!-- Tu dodamy kolejne DataTemplate dla artykułów, itp. -->
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Górna Wstążka (Ribbon) -->
+            <RowDefinition Height="*"/>
+            <!-- Dynamiczny Środek (Content) -->
+            <RowDefinition Height="26"/>
+            <!-- Dolny Pasek Stanu (Status Bar) -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. GÓRNA WSTĄŻKA (RIBBON / MENU BAR) -->
+        <Border Grid.Row="0" Background="#2E3440" Padding="12,8">
+            <DockPanel LastChildFill="False">
+
+                <!-- Lewa strona wstążki (Nawigacja po modułach) -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <!-- Logo programu -->
+                    <TextBlock Text="MagMini" FontSize="18" FontWeight="Bold" Foreground="#88C0D0" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+                    <!-- Przyciski modułów -->
+                    <Button Content="📊 Pulpit" Command="{Binding NavigateToDashboardCommand}" 
+                            Background="#3B4252" Foreground="#ECEFF4" FontWeight="SemiBold" Height="38" Padding="14,0" Margin="0,0,6,0" BorderThickness="0"/>
+                    <Button Content="📦 Artykuły" Command="{Binding NavigateToArticlesCommand}" 
+                            Background="#3B4252" Foreground="#ECEFF4" FontWeight="SemiBold" Height="38" Padding="14,0" Margin="0,0,6,0" BorderThickness="0"/>
+                    <Button Content="🏷️ Kategorie" Command="{Binding NavigateToCategoriesCommand}" 
+                            Background="#3B4252" Foreground="#ECEFF4" FontWeight="SemiBold" Height="38" Padding="14,0" Margin="0,0,6,0" BorderThickness="0"/>
+                    <Button Content="👥 Kontrahenci" Command="{Binding NavigateToCustomersCommand}" 
+                            Background="#3B4252" Foreground="#ECEFF4" FontWeight="SemiBold" Height="38" Padding="14,0" Margin="0,0,6,0" BorderThickness="0"/>
+                    <Button Content="📝 Zamówienia" Command="{Binding NavigateToOrdersCommand}" 
+                            Background="#3B4252" Foreground="#ECEFF4" FontWeight="SemiBold" Height="38" Padding="14,0" Margin="0,0,6,0" BorderThickness="0"/>
+                </StackPanel>
+
+                <!-- Prawa strona wstążki (Wyloguj) -->
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <Button Content="🚪 Wyloguj" Command="{Binding LogoutCommand}" 
+                            Background="#BF616A" Foreground="White" FontWeight="Bold" Height="38" Padding="16,0" BorderThickness="0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- 2. GŁÓWNY ŚRODKOWY KONTENT -->
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
+
+        <!-- 3. DOLNY PASEK STANU (STATUS BAR Z SEPARATORAMI '|') -->
+        <Border Grid.Row="2" Background="#E5E9F0" BorderBrush="#D8DEE9" BorderThickness="0,1,0,0" Padding="15,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="👤 Zalogowany: " Foreground="#4C566A" FontSize="11"/>
+                <TextBlock Text="{Binding CurrentUserName}" FontWeight="Bold" Foreground="#2E3440" FontSize="11"/>
+
+                <TextBlock Text=" | " Foreground="#98A2B3" Margin="8,0" FontSize="11"/>
+
+                <TextBlock Text="🖥️ Serwer: " Foreground="#4C566A" FontSize="11"/>
+                <TextBlock Text="{Binding ServerName}" FontWeight="SemiBold" Foreground="#2E3440" FontSize="11"/>
+
+                <TextBlock Text=" | " Foreground="#98A2B3" Margin="8,0" FontSize="11"/>
+
+                <TextBlock Text="🗄️ Baza danych: " Foreground="#4C566A" FontSize="11"/>
+                <TextBlock Text="{Binding DatabaseName}" FontWeight="SemiBold" Foreground="#2E3440" FontSize="11"/>
+
+                <TextBlock Text=" | " Foreground="#98A2B3" Margin="8,0" FontSize="11"/>
+
+                <TextBlock Text="⚡ Status: Połączono" Foreground="#A3BE8C" FontWeight="Bold" FontSize="11"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

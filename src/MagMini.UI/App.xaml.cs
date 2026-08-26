@@ -28,10 +28,13 @@ public partial class App : System.Windows.Application
                 services.AddSingleton<CurrentUserService>();
                 services.AddSingleton<ICurrentUserService>(sp => sp.GetRequiredService<CurrentUserService>());
 
-                // Rejestracja View i ViewModeli
+                // View Modele i Widoki
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<LoginView>();
-                services.AddSingleton<MainWindow>();
+                services.AddTransient<DashboardViewModel>();
+                services.AddTransient<DashboardView>();
+                services.AddTransient<MainViewModel>();
+                services.AddTransient<MainWindow>();
             })
             .Build();
     }
@@ -39,8 +42,6 @@ public partial class App : System.Windows.Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-
-        // Zapobiega zamknięciu aplikacji po zamknięciu SplashScreena
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
         var splash = new SplashScreenView();
@@ -64,29 +65,35 @@ public partial class App : System.Windows.Application
                 await Task.Delay(300);
             });
 
-            // Zamykamy splash screen dopiero po zakończeniu inicjalizacji
             splash.Close();
 
-            // Pokazujemy okno logowania
-            var loginView = AppHost!.Services.GetRequiredService<LoginView>();
-            var loginResult = loginView.ShowDialog();
-
-            if (loginResult == true)
-            {
-                var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
-                MainWindow = mainWindow;
-                ShutdownMode = ShutdownMode.OnMainWindowClose; // Od teraz zamknięcie MainWindow zamyka aplikację
-                mainWindow.Show();
-            }
-            else
-            {
-                Shutdown();
-            }
+            // Pętla sesji użytkownika (umożliwia wylogowanie i ponowne zalogowanie)
+            RunApplicationLoop();
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Błąd podczas inicjalizacji aplikacji:\n{ex.Message}", "Błąd krytyczny", MessageBoxButton.OK, MessageBoxImage.Error);
             Shutdown(-1);
+        }
+    }
+
+    private void RunApplicationLoop()
+    {
+        while (true)
+        {
+            var loginView = AppHost!.Services.GetRequiredService<LoginView>();
+            var loginResult = loginView.ShowDialog();
+
+            if (loginResult != true)
+            {
+                // Użytkownik zamknął okno logowania -> wyjście z programu
+                Shutdown();
+                break;
+            }
+
+            var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+            MainWindow = mainWindow;
+            mainWindow.ShowDialog(); // Otwieramy jako dialog sesji roboczej
         }
     }
 

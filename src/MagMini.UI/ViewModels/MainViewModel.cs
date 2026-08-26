@@ -1,0 +1,78 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MagMini.Application.Common.Interfaces;
+using MagMini.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MagMini.UI.ViewModels;
+
+public partial class MainViewModel : ObservableObject
+{
+    private readonly IServiceProvider _serviceProvider;
+    private readonly CurrentUserService _currentUserService;
+
+    [ObservableProperty]
+    private ObservableObject? _currentView;
+
+    [ObservableProperty]
+    private string _currentUserName = string.Empty;
+
+    [ObservableProperty]
+    private string _databaseName = "MagMiniDb";
+
+    [ObservableProperty]
+    private string _serverName = "localhost (.)";
+
+    public event Action? LogoutRequested;
+
+    public MainViewModel(IServiceProvider serviceProvider, CurrentUserService currentUserService)
+    {
+        _serviceProvider = serviceProvider;
+        _currentUserService = currentUserService;
+    }
+
+    public async Task InitializeAsync()
+    {
+        CurrentUserName = _currentUserService.Username ?? "Nieznany";
+        await NavigateToDashboardAsync();
+    }
+
+    [RelayCommand]
+    private async Task NavigateToDashboardAsync()
+    {
+        var dashboardVm = _serviceProvider.GetRequiredService<DashboardViewModel>();
+        await dashboardVm.LoadStatisticsAsync();
+        CurrentView = dashboardVm;
+    }
+
+    [RelayCommand]
+    private void NavigateToArticles()
+    {
+        // Miejsce na widok artykułów w kolejnym kroku
+    }
+
+    [RelayCommand]
+    private void NavigateToCategories()
+    {
+        // Miejsce na widok kategorii
+    }
+
+    [RelayCommand]
+    private void NavigateToCustomers()
+    {
+        // Miejsce na widok kontrahentów
+    }
+
+    [RelayCommand]
+    private void NavigateToOrders()
+    {
+        // Miejsce na widok zamówień
+    }
+
+    [RelayCommand]
+    private void Logout()
+    {
+        _currentUserService.Clear();
+        LogoutRequested?.Invoke();
+    }
+}
