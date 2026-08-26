@@ -11,7 +11,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 
-        var connectionString = "Server=(localdb)\\mssqllocaldb;Database=MagMiniDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
+        var connectionString = "Server=.;Database=MagMiniDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
         optionsBuilder.UseSqlServer(connectionString);
 
         // Atrapka ICurrentUserService tylko na czas tworzenia migracji
