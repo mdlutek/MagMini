@@ -14,7 +14,9 @@
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
             <views:DashboardView />
         </DataTemplate>
-        <!-- Tu dodamy kolejne DataTemplate dla artykułów, itp. -->
+        <DataTemplate DataType="{x:Type vm:ArticlesViewModel}">
+            <views:ArticlesView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
