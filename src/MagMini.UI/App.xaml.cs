@@ -35,6 +35,10 @@ public partial class App : System.Windows.Application
                 services.AddTransient<DashboardView>();
                 services.AddTransient<MainViewModel>();
                 services.AddTransient<MainWindow>();
+                services.AddTransient<ArticlesViewModel>();
+                services.AddTransient<ArticlesView>();
+                services.AddTransient<ArticleEditViewModel>();
+                services.AddTransient<ArticleEditDialog>();
             })
             .Build();
     }

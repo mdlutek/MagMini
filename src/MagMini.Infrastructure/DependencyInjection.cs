@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<AuditableEntityInterceptor>();
+        services.AddScoped<IArticleService, ArticleService>();
 
         services.AddDbContext<AppDbContext>((sp, options) =>
         {

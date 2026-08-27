@@ -46,9 +46,11 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToArticles()
+    private async Task NavigateToArticlesAsync()
     {
-        // Miejsce na widok artykułów w kolejnym kroku
+        var articlesVm = _serviceProvider.GetRequiredService<ArticlesViewModel>();
+        await articlesVm.InitializeAsync();
+        CurrentView = articlesVm;
     }
 
     [RelayCommand]
