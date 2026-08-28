@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Paczka magazynowa MagMini (Bez żadnych napisów .NET) -->
+  <g transform="translate(32, 24) scale(0.875)">
+    <!-- Górna pokrywa paczki -->
+    <polygon points="256,60 432,155 256,250 80,155" fill="#88C0D0"/>
+    <!-- Lewy bok paczki -->
+    <polygon points="80,155 256,250 256,440 80,345" fill="#5E81AC"/>
+    <!-- Prawy bok paczki -->
+    <polygon points="256,250 432,155 432,345 256,440" fill="#81A1C1"/>
+
+    <!-- Taśma pakowa pionowa (Złota) -->
+    <polygon points="226,76 256,60 286,76 256,92" fill="#EBCB8B"/>
+    <polygon points="226,76 256,92 256,250 226,234" fill="#EBCB8B"/>
+    <polygon points="256,92 286,76 286,234 256,250" fill="#D08770"/>
+
+    <!-- Taśma pakowa pozioma -->
+    <polygon points="80,240 256,335 256,370 80,275" fill="#EBCB8B" opacity="0.95"/>
+    <polygon points="256,335 432,240 432,275 256,370" fill="#D08770" opacity="0.95"/>
+  </g>
+</svg>

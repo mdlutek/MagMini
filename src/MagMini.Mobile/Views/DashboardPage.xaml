@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MagMini.Mobile.ViewModels"
+             x:Class="MagMini.Mobile.Views.DashboardPage"
+             Title="MagMini - Pulpit Magazynu"
+             BackgroundColor="#1E1E2E">
+
+    <ScrollView Padding="20">
+        <VerticalStackLayout Spacing="20">
+
+            <!-- Nagłówek użytkownika -->
+            <Border BackgroundColor="#2E3440" Stroke="#3B4252" StrokeShape="RoundRectangle 12" Padding="20">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label Text="👤" FontSize="36" VerticalOptions="Center" Margin="0,0,15,0"/>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                        <Label Text="Zalogowany użytkownik" FontSize="12" TextColor="#D8DEE9"/>
+                        <Label Text="Administrator (admin)" FontSize="18" FontAttributes="Bold" TextColor="#88C0D0"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Label Text="MENU GŁÓWNE" FontSize="13" FontAttributes="Bold" TextColor="#D8DEE9" Margin="5,10,0,0"/>
+
+            <!-- Siatka kafelków (Grid 2 kolumny) -->
+            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" ColumnSpacing="15" RowSpacing="15">
+
+                <!-- Kafelek 1: Artykuły i Magazyn -->
+                <Border Grid.Row="0" Grid.Column="0" HeightRequest="150" BackgroundColor="#2E3440" Stroke="#5E81AC" StrokeThickness="1.5" StrokeShape="RoundRectangle 12" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToArticlesCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8">
+                        <Label Text="📦" FontSize="40" HorizontalOptions="Center"/>
+                        <Label Text="Artykuły" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                        <Label Text="Stany magazynowe" FontSize="11" TextColor="#88C0D0" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Kafelek 2: Zamówienia ZK -->
+                <Border Grid.Row="0" Grid.Column="1" HeightRequest="150" BackgroundColor="#2E3440" Stroke="#EBCB8B" StrokeThickness="1.5" StrokeShape="RoundRectangle 12" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToOrdersCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8">
+                        <Label Text="📝" FontSize="40" HorizontalOptions="Center"/>
+                        <Label Text="Zamówienia" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                        <Label Text="Wydania towaru ZK" FontSize="11" TextColor="#EBCB8B" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Kafelek 3: Skaner Kodów -->
+                <Border Grid.Row="1" Grid.Column="0" HeightRequest="150" BackgroundColor="#2E3440" Stroke="#A3BE8C" StrokeThickness="1.5" StrokeShape="RoundRectangle 12" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToScannerCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8">
+                        <Label Text="📷" FontSize="40" HorizontalOptions="Center"/>
+                        <Label Text="Skaner Kodów" FontSize="16" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                        <Label Text="Weryfikator stanu" FontSize="11" TextColor="#A3BE8C" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Kafelek 4: Wyloguj -->
+                <Border Grid.Row="1" Grid.Column="1" HeightRequest="150" BackgroundColor="#2E3440" Stroke="#BF616A" StrokeThickness="1.5" StrokeShape="RoundRectangle 12" Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="8">
+                        <Label Text="🚪" FontSize="40" HorizontalOptions="Center"/>
+                        <Label Text="Wyloguj" FontSize="16" FontAttributes="Bold" TextColor="#BF616A" HorizontalOptions="Center"/>
+                        <Label Text="Zakończ sesję" FontSize="11" TextColor="#D8DEE9" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
