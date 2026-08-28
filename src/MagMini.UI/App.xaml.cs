@@ -24,25 +24,40 @@ public partial class App : System.Windows.Application
             })
             .ConfigureServices((context, services) =>
             {
+                // Rejestracja warstwy danych i serwisów
                 services.AddInfrastructure(context.Configuration);
+
+                // Kontekst użytkownika (audyt)
                 services.AddSingleton<CurrentUserService>();
                 services.AddSingleton<ICurrentUserService>(sp => sp.GetRequiredService<CurrentUserService>());
 
-                // View Modele i Widoki
+                // 1. Okno Główne i Logowanie
                 services.AddTransient<LoginViewModel>();
                 services.AddTransient<LoginView>();
-                services.AddTransient<DashboardViewModel>();
-                services.AddTransient<DashboardView>();
                 services.AddTransient<MainViewModel>();
                 services.AddTransient<MainWindow>();
+
+                // 2. Panel Główny
+                services.AddTransient<DashboardViewModel>();
+                services.AddTransient<DashboardView>();
+
+                // 3. Moduł Artykułów
                 services.AddTransient<ArticlesViewModel>();
                 services.AddTransient<ArticlesView>();
                 services.AddTransient<ArticleEditViewModel>();
                 services.AddTransient<ArticleEditDialog>();
+
+                // 4. Moduł Kontrahentów
                 services.AddTransient<CustomersViewModel>();
                 services.AddTransient<CustomersView>();
                 services.AddTransient<CustomerEditViewModel>();
                 services.AddTransient<CustomerEditDialog>();
+
+                // 5. Moduł Zamówień (ZK)
+                services.AddTransient<OrdersViewModel>();
+                services.AddTransient<OrdersView>();
+                services.AddTransient<OrderEditViewModel>();
+                services.AddTransient<OrderEditDialog>();
             })
             .Build();
     }

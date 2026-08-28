@@ -22,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<AuditableEntityInterceptor>();
         services.AddScoped<IArticleService, ArticleService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IOrderService, OrderService>();
         services.AddHttpClient<GusBirLookupService>();
         services.AddHttpClient<ICompanyLookupService, HybridCompanyLookupService>();
 
