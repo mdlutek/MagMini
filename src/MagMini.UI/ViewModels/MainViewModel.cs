@@ -60,9 +60,11 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToCustomers()
+    private async Task NavigateToCustomersAsync()
     {
-        // Miejsce na widok kontrahentów
+        var customersVm = _serviceProvider.GetRequiredService<CustomersViewModel>();
+        await customersVm.InitializeAsync();
+        CurrentView = customersVm;
     }
 
     [RelayCommand]
