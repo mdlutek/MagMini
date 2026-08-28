@@ -114,32 +114,83 @@ app.MapPost("/api/auth/login", async (IAuthService authService, JwtTokenService 
 // 2. ENDPOINTY ZABEZPIECZONE (.RequireAuthorization())
 // ==========================================
 
+// ==========================================
 // ARTYKUŁY
+// ==========================================
 var articlesGroup = app.MapGroup("/api/articles").WithTags("Articles").RequireAuthorization();
-articlesGroup.MapGet("/", async (IArticleService service, [AsParameters] ArticleFilterDto filter) => Results.Ok(await service.GetPagedAsync(filter)));
-articlesGroup.MapGet("/{id:int}", async (IArticleService service, int id) => (await service.GetForEditAsync(id)) is { } a ? Results.Ok(a) : Results.NotFound());
-articlesGroup.MapPost("/", async (IArticleService service, SaveArticleDto dto) => (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
-articlesGroup.MapDelete("/{id:int}", async (IArticleService service, int id) => (await service.DeleteAsync(id)) is { Success: true } ? Results.Ok() : Results.BadRequest());
 
+articlesGroup.MapGet("/", async (IArticleService service, string? searchPhrase, int? categoryId, int pageNumber = 1, int pageSize = 100) =>
+{
+    var filter = new ArticleFilterDto
+    {
+        SearchPhrase = searchPhrase,
+        CategoryId = categoryId,
+        PageNumber = pageNumber,
+        PageSize = pageSize
+    };
+    return Results.Ok(await service.GetPagedAsync(filter));
+});
+
+articlesGroup.MapGet("/{id:int}", async (IArticleService service, int id) =>
+    (await service.GetForEditAsync(id)) is { } a ? Results.Ok(a) : Results.NotFound());
+
+articlesGroup.MapPost("/", async (IArticleService service, SaveArticleDto dto) =>
+    (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
+
+articlesGroup.MapDelete("/{id:int}", async (IArticleService service, int id) =>
+    (await service.DeleteAsync(id)) is { Success: true } ? Results.Ok() : Results.BadRequest());
+
+// ==========================================
 // KONTRAHENCI
+// ==========================================
 var customersGroup = app.MapGroup("/api/customers").WithTags("Customers").RequireAuthorization();
-customersGroup.MapGet("/", async (ICustomerService service, [AsParameters] CustomerFilterDto filter) => Results.Ok(await service.GetPagedAsync(filter)));
-customersGroup.MapGet("/lookup/{nip}", async (ICompanyLookupService service, string nip) => (await service.LookupByNipAsync(nip)) is { IsSuccess: true } res ? Results.Ok(res) : Results.BadRequest());
-customersGroup.MapPost("/", async (ICustomerService service, SaveCustomerDto dto) => (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
-customersGroup.MapDelete("/{id:int}", async (ICustomerService service, int id) => (await service.DeleteAsync(id)) is { Success: true } ? Results.Ok() : Results.BadRequest());
 
+customersGroup.MapGet("/", async (ICustomerService service, string? searchPhrase, bool? isCompanyOnly, int pageNumber = 1, int pageSize = 100) =>
+{
+    var filter = new CustomerFilterDto
+    {
+        SearchPhrase = searchPhrase,
+        IsCompanyOnly = isCompanyOnly,
+        PageNumber = pageNumber,
+        PageSize = pageSize
+    };
+    return Results.Ok(await service.GetPagedAsync(filter));
+});
+
+customersGroup.MapGet("/lookup/{nip}", async (ICompanyLookupService service, string nip) =>
+    (await service.LookupByNipAsync(nip)) is { IsSuccess: true } res ? Results.Ok(res) : Results.BadRequest());
+
+customersGroup.MapPost("/", async (ICustomerService service, SaveCustomerDto dto) =>
+    (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
+
+customersGroup.MapDelete("/{id:int}", async (ICustomerService service, int id) =>
+    (await service.DeleteAsync(id)) is { Success: true } ? Results.Ok() : Results.BadRequest());
+
+// ==========================================
 // ZAMÓWIENIA
+// ==========================================
 var ordersGroup = app.MapGroup("/api/orders").WithTags("Orders").RequireAuthorization();
-ordersGroup.MapGet("/", async (IOrderService service, [AsParameters] OrderFilterDto filter) => Results.Ok(await service.GetPagedAsync(filter)));
-ordersGroup.MapGet("/{id:int}", async (IOrderService service, int id) => (await service.GetForEditAsync(id)) is { } o ? Results.Ok(o) : Results.NotFound());
-ordersGroup.MapPost("/", async (IOrderService service, SaveOrderDto dto) => (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
-ordersGroup.MapPut("/{id:int}/status", async (IOrderService service, int id, OrderStatus status) => (await service.ChangeStatusAsync(id, status)) is { Success: true } ? Results.Ok() : Results.BadRequest());
 
-// KATEGORIE
-var categoriesGroup = app.MapGroup("/api/categories").WithTags("Categories").RequireAuthorization();
-categoriesGroup.MapGet("/", async (ICategoryService service, string? search) => Results.Ok(await service.GetAllAsync(search)));
-categoriesGroup.MapPost("/", async (ICategoryService service, SaveCategoryDto dto) => (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
+ordersGroup.MapGet("/", async (IOrderService service, string? searchPhrase, OrderStatus? status, int pageNumber = 1, int pageSize = 100) =>
+{
+    var filter = new OrderFilterDto
+    {
+        SearchPhrase = searchPhrase,
+        Status = status,
+        PageNumber = pageNumber,
+        PageSize = pageSize
+    };
+    return Results.Ok(await service.GetPagedAsync(filter));
+});
 
+ordersGroup.MapGet("/{id:int}", async (IOrderService service, int id) =>
+    (await service.GetForEditAsync(id)) is { } o ? Results.Ok(o) : Results.NotFound());
+
+ordersGroup.MapPost("/", async (IOrderService service, SaveOrderDto dto) =>
+    (await service.SaveAsync(dto)) is { Success: true } ? Results.Ok() : Results.BadRequest());
+
+ordersGroup.MapPut("/{id:int}/status", async (IOrderService service, int id, OrderStatus status) =>
+    (await service.ChangeStatusAsync(id, status)) is { Success: true } ? Results.Ok() : Results.BadRequest());
 app.Run();
 
 public record LoginRequest(string Username, string Password);

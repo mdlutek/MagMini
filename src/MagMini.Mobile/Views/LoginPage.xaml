@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MagMini.Mobile.ViewModels"
+             x:Class="MagMini.Mobile.Views.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#1E1E2E">
+    <Grid Padding="30" VerticalOptions="Center">
+        <VerticalStackLayout Spacing="15">
+
+            <!-- Logo -->
+            <Label Text="MagMini Mobile" FontSize="32" FontAttributes="Bold" TextColor="#88C0D0" HorizontalOptions="Center"/>
+            <Label Text="Kolektor Magazynowy" FontSize="14" TextColor="#D8DEE9" HorizontalOptions="Center" Margin="0,0,0,25"/>
+
+            <!-- Formularz -->
+            <Label Text="Użytkownik:" TextColor="#E5E9F0" FontAttributes="Bold"/>
+            <Border Stroke="#3B4252" StrokeShape="RoundRectangle 8" BackgroundColor="#2E3440" Padding="10,0">
+                <Entry Text="{Binding Username}" TextColor="White" HeightRequest="45"/>
+            </Border>
+
+            <Label Text="Hasło:" TextColor="#E5E9F0" FontAttributes="Bold"/>
+            <Border Stroke="#3B4252" StrokeShape="RoundRectangle 8" BackgroundColor="#2E3440" Padding="10,0">
+                <Entry Text="{Binding Password}" IsPassword="True" TextColor="White" HeightRequest="45"/>
+            </Border>
+
+            <!-- Błąd -->
+            <Label Text="{Binding ErrorMessage}" TextColor="#BF616A" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Color="#88C0D0" HorizontalOptions="Center"/>
+
+            <!-- Przycisk -->
+            <Button Text="ZALOGUJ SIĘ" Command="{Binding LoginCommand}" 
+                    BackgroundColor="#5E81AC" TextColor="White" FontAttributes="Bold" HeightRequest="50" CornerRadius="8" Margin="0,15,0,0"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

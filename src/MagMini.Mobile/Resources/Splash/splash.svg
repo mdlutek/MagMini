@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <g transform="translate(0, 20)">
+    <!-- Symbol paczki -->
+    <path fill="#88C0D0" d="M256 80L80 168l176 88 176-88L256 80z"/>
+    <path fill="#5E81AC" d="M80 168v176l176 88V256L80 168z"/>
+    <path fill="#81A1C1" d="M432 168L256 256v176l176-88V168z"/>
+    <!-- Taśma pakowa -->
+    <path fill="#EBCB8B" d="M226 95l-30 15 176 88 30-15-176-88zm0 161v145l30 15V271l-30-15z"/>
+  </g>
+</svg>

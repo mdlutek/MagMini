@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MagMini.Mobile.ViewModels"
+             x:Class="MagMini.Mobile.Views.ArticlesPage"
+             Title="Kartoteka Towarów"
+             BackgroundColor="#ECEFF4">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Wyloguj" Command="{Binding LogoutCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto, Auto, *">
+        <!-- Pasek wyszukiwania -->
+        <SearchBar Grid.Row="0" Placeholder="Szukaj po nazwie, SKU, EAN..." Text="{Binding SearchText}" 
+                   SearchCommand="{Binding SearchCommand}" Margin="10" BackgroundColor="White"/>
+
+        <!-- Informacja o błędzie lub braku towarów -->
+        <Label Grid.Row="1" Text="{Binding ErrorMessage}" TextColor="#BF616A" FontAttributes="Bold" 
+               HorizontalOptions="Center" Margin="10,0,10,10"
+               IsVisible="{Binding ErrorMessage, Converter={x:Null}}"/>
+
+        <!-- Lista towarów -->
+        <RefreshView Grid.Row="2" Command="{Binding LoadArticlesCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView ItemsSource="{Binding Articles}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10,5" Padding="15" BackgroundColor="White" Stroke="#D8DEE9" StrokeShape="RoundRectangle 8">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="3">
+                                    <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="#2E3440"/>
+                                    <Label Text="{Binding Code, StringFormat='Symbol: {0}'}" FontSize="13" TextColor="#5E81AC"/>
+                                    <Label Text="{Binding CategoryName, StringFormat='Kategoria: {0}'}" FontSize="12" TextColor="#4C566A"/>
+                                    <Label Text="{Binding DefaultSalePriceGross, StringFormat='Cena: {0:N2} zł brutto'}" FontSize="13" FontAttributes="Bold" TextColor="#2E3440" Margin="0,4,0,0"/>
+                                </VerticalStackLayout>
+
+                                <!-- Badge ze stanem magazynowym -->
+                                <Border Grid.Column="1" BackgroundColor="#A3BE8C" StrokeShape="RoundRectangle 6" Padding="10,5" VerticalOptions="Center">
+                                    <VerticalStackLayout>
+                                        <Label Text="STAN" FontSize="9" FontAttributes="Bold" TextColor="#2E3440" HorizontalOptions="Center"/>
+                                        <Label Text="{Binding StockQuantity, StringFormat='{0:N0}'}" FontSize="18" FontAttributes="Bold" TextColor="#2E3440" HorizontalOptions="Center"/>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>
