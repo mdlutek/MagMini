@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:MagMini.Mobile.ViewModels"
+             xmlns:dto="clr-namespace:MagMini.Application.DTOs.Orders;assembly=MagMini.Application"
+             x:Class="MagMini.Mobile.Views.OrdersPage"
+             x:DataType="vm:OrdersViewModel"
+             Title="Zamówienia Klientów (ZK)"
+             BackgroundColor="#ECEFF4">
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Wyszukiwarka -->
+        <SearchBar Grid.Row="0" Placeholder="Szukaj po nr ZK, kontrahencie..." Text="{Binding SearchText}" 
+                   SearchCommand="{Binding SearchCommand}" Margin="10" BackgroundColor="White"/>
+
+        <!-- Lista zamówień -->
+        <RefreshView Grid.Row="1" Command="{Binding LoadOrdersCommand}" IsRefreshing="{Binding IsRefreshing}">
+            <CollectionView ItemsSource="{Binding Orders}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:OrderDto">
+                        <Border Margin="10,6" Padding="15" BackgroundColor="White" Stroke="#D8DEE9" StrokeShape="RoundRectangle 10">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OrdersViewModel}}, Path=OpenOrderDetailsCommand}" CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                    <Label Text="{Binding OrderNumber}" FontSize="16" FontAttributes="Bold" TextColor="#2E3440"/>
+                                    <Label Text="{Binding CustomerName}" FontSize="14" FontAttributes="Bold" TextColor="#5E81AC"/>
+                                    <Label Text="{Binding OrderDate, StringFormat='Data: {0:yyyy-MM-dd HH:mm}'}" FontSize="12" TextColor="#4C566A"/>
+                                    <Label Text="{Binding TotalGross, StringFormat='Wartość: {0:N2} zł brutto'}" FontSize="14" FontAttributes="Bold" TextColor="#2E3440" Margin="0,4,0,0"/>
+                                </VerticalStackLayout>
+
+                                <!-- Status zamówienia -->
+                                <Border Grid.Column="1" BackgroundColor="#E5E9F0" StrokeShape="RoundRectangle 6" Padding="8,4" VerticalOptions="Center">
+                                    <Label Text="{Binding StatusDescription}" FontSize="11" FontAttributes="Bold" TextColor="#2E3440"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>
