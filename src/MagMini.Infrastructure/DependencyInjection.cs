@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IOrderService, OrderService>();
         services.AddHttpClient<GusBirLookupService>();
         services.AddHttpClient<ICompanyLookupService, HybridCompanyLookupService>();
+        services.AddScoped<ICategoryService, CategoryService>();
 
         services.AddDbContext<AppDbContext>((sp, options) =>
         {
