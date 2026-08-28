@@ -54,9 +54,11 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToCategories()
+    private async Task NavigateToCategoriesAsync()
     {
-        // Moduł kategorii (opcjonalny)
+        var categoriesVm = _serviceProvider.GetRequiredService<CategoriesViewModel>();
+        await categoriesVm.InitializeAsync();
+        CurrentView = categoriesVm;
     }
 
     [RelayCommand]

@@ -58,6 +58,12 @@ public partial class App : System.Windows.Application
                 services.AddTransient<OrdersView>();
                 services.AddTransient<OrderEditViewModel>();
                 services.AddTransient<OrderEditDialog>();
+
+                // 6. Moduł Kategorii
+                services.AddTransient<CategoriesViewModel>();
+                services.AddTransient<CategoriesView>();
+                services.AddTransient<CategoryEditViewModel>();
+                services.AddTransient<CategoryEditDialog>();
             })
             .Build();
     }
