@@ -46,27 +46,33 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToArticles()
+    private async Task NavigateToArticlesAsync()
     {
-        // Miejsce na widok artykułów w kolejnym kroku
+        var articlesVm = _serviceProvider.GetRequiredService<ArticlesViewModel>();
+        await articlesVm.InitializeAsync();
+        CurrentView = articlesVm;
     }
 
     [RelayCommand]
     private void NavigateToCategories()
     {
-        // Miejsce na widok kategorii
+        // Moduł kategorii (opcjonalny)
     }
 
     [RelayCommand]
-    private void NavigateToCustomers()
+    private async Task NavigateToCustomersAsync()
     {
-        // Miejsce na widok kontrahentów
+        var customersVm = _serviceProvider.GetRequiredService<CustomersViewModel>();
+        await customersVm.InitializeAsync();
+        CurrentView = customersVm;
     }
 
     [RelayCommand]
-    private void NavigateToOrders()
+    private async Task NavigateToOrdersAsync()
     {
-        // Miejsce na widok zamówień
+        var ordersVm = _serviceProvider.GetRequiredService<OrdersViewModel>();
+        await ordersVm.InitializeAsync();
+        CurrentView = ordersVm;
     }
 
     [RelayCommand]
