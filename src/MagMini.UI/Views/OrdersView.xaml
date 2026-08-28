@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="MagMini.UI.Views.OrdersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#ECEFF4" FontFamily="Segoe UI">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Pasek Wyszukiwania -->
+        <Border Grid.Row="0" Background="White" CornerRadius="6" Padding="15,10" Margin="0,0,0,12" BorderBrush="#D8DEE9" BorderThickness="1">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <TextBlock Text="Szukaj (Nr ZK / Kontrahent / NIP):" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0" Foreground="#4C566A"/>
+                    <TextBox Text="{Binding SearchPhrase, UpdateSourceTrigger=PropertyChanged}" Width="260" Height="30" Padding="5,2" VerticalContentAlignment="Center"/>
+                    <Button Content="🔍 Szukaj" Command="{Binding SearchCommand}" Height="30" Width="90" Margin="12,0,0,0" Background="#5E81AC" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                    <TextBlock Text="Dokumenty Zamówień od Klientów (ZK)" FontSize="16" FontWeight="Bold" Foreground="#2E3440" VerticalAlignment="Center"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- DataGrid Zamówień -->
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}"
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                  Background="White" RowHeaderWidth="0" GridLinesVisibility="Horizontal"
+                  BorderBrush="#D8DEE9" BorderThickness="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Numer dokumentu" Binding="{Binding OrderNumber}" Width="140" FontWeight="Bold"/>
+                <DataGridTextColumn Header="Data wystawienia" Binding="{Binding OrderDate, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="140"/>
+                <DataGridTextColumn Header="Kontrahent" Binding="{Binding CustomerName}" Width="*" MinWidth="220"/>
+                <DataGridTextColumn Header="NIP" Binding="{Binding CustomerNip}" Width="120"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding StatusDescription}" Width="120" FontWeight="SemiBold"/>
+                <DataGridTextColumn Header="Poz." Binding="{Binding ItemsCount}" Width="50"/>
+                <DataGridTextColumn Header="Wartość Netto" Binding="{Binding TotalNet, StringFormat={}{0:N2} zł}" Width="130"/>
+                <DataGridTextColumn Header="Wartość Brutto" Binding="{Binding TotalGross, StringFormat={}{0:N2} zł}" Width="140" FontWeight="Bold"/>
+                <DataGridTextColumn Header="Wystawił" Binding="{Binding CreatedBy}" Width="110"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Dolny Pasek Akcji i Paginacji -->
+        <Grid Grid.Row="2" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Przyciski akcji ERP -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <Button Content="➕ Nowe ZK" Command="{Binding AddOrderCommand}" Height="34" Width="110" Background="#A3BE8C" Foreground="#2E3440" FontWeight="Bold" BorderThickness="0" Margin="0,0,6,0"/>
+                <Button Content="✏️ Edytuj" Command="{Binding EditOrderCommand}" Height="34" Width="90" Background="#88C0D0" Foreground="#2E3440" FontWeight="Bold" BorderThickness="0" Margin="0,0,6,0"/>
+                <Button Content="✅ Realizuj (Wydaj)" Command="{Binding ChangeStatusCommand}" CommandParameter="Completed" Height="34" Width="135" Background="#81A1C1" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,6,0"/>
+                <Button Content="🚫 Anuluj" Command="{Binding ChangeStatusCommand}" CommandParameter="Cancelled" Height="34" Width="85" Background="#D08770" Foreground="White" FontWeight="Bold" BorderThickness="0" Margin="0,0,6,0"/>
+                <Button Content="🗑️ Usuń" Command="{Binding DeleteOrderCommand}" Height="34" Width="85" Background="#BF616A" Foreground="White" FontWeight="Bold" BorderThickness="0"/>
+            </StackPanel>
+
+            <!-- Paginacja -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="{Binding TotalCount, StringFormat=Łącznie zamówień: {0}}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#4C566A" Margin="0,0,15,0"/>
+                <Button Content="◀ Poprzednia" Command="{Binding PrevPageCommand}" Height="30" Width="95" Background="#E5E9F0" BorderBrush="#D8DEE9"/>
+                <TextBlock VerticalAlignment="Center" Margin="10,0" FontWeight="Bold" Foreground="#2E3440">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Strona {0} z {1}">
+                            <Binding Path="PageNumber"/>
+                            <Binding Path="TotalPages"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <Button Content="Następna ▶" Command="{Binding NextPageCommand}" Height="30" Width="95" Background="#E5E9F0" BorderBrush="#D8DEE9"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

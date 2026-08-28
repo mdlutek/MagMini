@@ -56,7 +56,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void NavigateToCategories()
     {
-        // Miejsce na widok kategorii
+        // Moduł kategorii (opcjonalny)
     }
 
     [RelayCommand]
@@ -68,9 +68,11 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void NavigateToOrders()
+    private async Task NavigateToOrdersAsync()
     {
-        // Miejsce na widok zamówień
+        var ordersVm = _serviceProvider.GetRequiredService<OrdersViewModel>();
+        await ordersVm.InitializeAsync();
+        CurrentView = ordersVm;
     }
 
     [RelayCommand]
