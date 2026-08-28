@@ -21,6 +21,9 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<AuditableEntityInterceptor>();
         services.AddScoped<IArticleService, ArticleService>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddHttpClient<GusBirLookupService>();
+        services.AddHttpClient<ICompanyLookupService, HybridCompanyLookupService>();
 
         services.AddDbContext<AppDbContext>((sp, options) =>
         {

@@ -17,6 +17,9 @@
         <DataTemplate DataType="{x:Type vm:ArticlesViewModel}">
             <views:ArticlesView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CustomersViewModel}">
+            <views:CustomersView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
