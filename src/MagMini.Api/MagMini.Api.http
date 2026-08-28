@@ -1,0 +1,6 @@
+@MagMini.Api_HostAddress = http://localhost:5274
+
+GET {{MagMini.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
